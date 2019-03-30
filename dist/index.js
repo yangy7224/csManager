@@ -137,13 +137,10 @@ export default class csManager{
 
         //如果这条消息是来自一个不在聊天列表当中的新对象,仅仅在客服端
         if(this.mode == 'servicer'){
-          let isHaveDialogID = false;
-          that.talkerList.map(function(item){
-            if(item.dialogueID == fromDialogID){
-              isHaveDialogID = true;
-            }
-          })
-          if(!isHaveDialogID){
+
+          if(that.talkerList.filter(function(item){
+              return item.dialogueID == fromDialogID
+            }).length == 0){
             that.isTagReload = false;
             that.msgCacheObj[fromDialogID] = [];
             //调用获取单独对象列表，并把他插入talkerList中去

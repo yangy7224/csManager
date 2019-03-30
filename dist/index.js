@@ -165,6 +165,8 @@ export default class csManager{
           }
         }
 
+
+
         that.msgCacheObj[fromDialogID].push(lastMsg);
 
         //新消息来自当前用户
@@ -181,9 +183,13 @@ export default class csManager{
             }
             //新消息来时，更新聊天时间。
             if (item.dialogueID == fromDialogID) {
-              item.lastMessage.createTime = lastMsg.createTime ? lastMsg.createTime.substr(0, 16) : '';
+              item.lastMessage.createTime = lastMsg.createTime ? lastMsg.createTime.substring(0, lastMsg.createTime.length - 3) : '';
             }
           })
+        }
+
+        if(this.mode == 'buyer') {
+          lastMsg.createTime = lastMsg.createTime ? lastMsg.createTime.substring(0, lastMsg.createTime.length - 3) : '';
         }
 
         callback && callback('messageUser');

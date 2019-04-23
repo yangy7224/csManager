@@ -206,7 +206,7 @@ export default class csManager{
 
     let lastMsg = that.curTalker.lastMessage;
     var toUserID = that.curTalker.userID;
-    var toDialogID =  lastMsg ? that.curTalker.dialogueID : 0;
+    var toDialogID =  lastMsg ? that.curTalker.dialogueID || lastMsg.dialogueID : 0;
 
     vue.$store.commit('msgDoSendMessage', {
       type: that.options.dialogType,
@@ -232,7 +232,10 @@ export default class csManager{
   doSwitchCurTalker(item, tIndex){
     const that = this;
     that.curTalker = item;
-    that.msgList = that.msgCacheObj[that.curTalker.dialogueID];
+    let lastMsg = that.curTalker.lastMessage;
+    var toDialogID =  lastMsg ? that.curTalker.dialogueID || lastMsg.dialogueID : 0;
+
+    that.msgList = that.msgCacheObj[toDialogID];
 
     if(item.isUnread) {
       //点击这行，有未读消息。那么将标记设为已读。处理talkerList排序
@@ -394,6 +397,7 @@ export default class csManager{
     if(!lastMsg || !lastMsg.dialogueID){
       return false;
     }
+
 
     await that.api.GHIMSetMessagesReaded({
       relationType: that.options.dialogType,
